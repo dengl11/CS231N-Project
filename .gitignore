@@ -8,7 +8,16 @@
 .DS_Store?
 ._*
 .ipynb_checkpoints/
+__pycache__
 
 # Data Folder #
 ######################
 data/
+output/
+
+
+# Media Files#
+######################
+*.gif
+
+
