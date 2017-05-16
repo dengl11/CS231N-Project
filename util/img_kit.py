@@ -4,11 +4,20 @@
 import os, sys
 from os import walk
 from PIL import Image
+from scipy import misc
 
-def imgs_in_folder(folder):
+def files_in_folder(folder, format="jpeg"):
+	"""
+	return a list of file names in folder
+	"""
 	imgs = [p[2] for p in walk(folder)][0]
-	imgs = list(filter(lambda x: not x.startswith("."), imgs))
+	imgs = list(filter(lambda x:  x.endswith(format), imgs))
 	return imgs
+
+
+
+def imgs_in_folder(folder, format="jpeg"):
+	return [misc.imread(os.path.join(folder, x)) for x in files_in_folder(folder, format=format)]
 
 
 def merge(end_points, mid):
@@ -48,7 +57,7 @@ def resize_all(input_folder, output_folder, size):
 	size: (width, hight)
 	"""
 	create_dir(output_folder)
-	for m in imgs_in_folder(input_folder):
+	for m in files_in_folder(input_folder):
 		resize(os.path.join(input_folder, m), size, output_folder)
 
 
