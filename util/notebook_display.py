@@ -45,7 +45,7 @@ def plot_batch_images(imgs, size = (12, 6), title=None):
         imgs: nd array of [batch_size, ...]
     """
     imgs = [imgs[i] for i in range(imgs.shape[0])]
-    plot_images(imgs)
+    plot_images(imgs, size, title)
 
 
 def sample_and_show_many(imgs, num):
