@@ -6,6 +6,7 @@ from os import walk
 from PIL import Image
 from scipy import misc
 import numpy as np
+from scipy.misc import *
 
 def files_in_folder(folder, format="jpeg"):
 	"""
@@ -49,18 +50,32 @@ def create_dir(directory):
 		os.mkdir(directory)
 
 
-def resize(img_path, size, output_folder, keep_ratio=False):
+def resize(img, size):
 	"""
-	resize single image from path, to output_folder
-	size: (width, hight)
+	resize image to target size
+	INPUT: 
+		img: numpy array of source image
 	"""
 	try:
-		im = Image.open(img_path)
-		if keep_ratio: im.thumbnail(size, Image.ANTIALIAS)
-		else:          im.thumbnail(size)
-		im.save(os.path.join(output_folder, img_path.split("/")[-1]), "JPEG")
+		return imresize(img, size)
 	except IOError:
 		print("cannot create thumbnail for '%s'" % img_path)
+
+
+def resize_and_save(img_path, size, output_folder, keep_ratio=False):
+	"""
+	resize single image from path, to output_folder
+
+	INPUT: 
+		img_path:   	path of image file on disk
+		size: 			(width, hight)
+	OUTPUT:
+		output_folder:  path of folder to be saved
+	"""
+	im = Image.open(img_path)
+	img.thumbnail(size)
+	resized = resize(img_path, size)
+	im.save(os.path.join(output_folder, img_path.split("/")[-1]), "JPEG")
 
 
 def resize_all(input_folder, output_folder, size):
