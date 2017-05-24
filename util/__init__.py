@@ -1,1 +1,1 @@
-__all__ = ['gif', 'parser', 'img_kit']
+__all__ = ['gif', 'parser', 'img_kit', 'notebook_display']

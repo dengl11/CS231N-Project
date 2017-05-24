@@ -5,19 +5,31 @@ import os, sys
 from os import walk
 from PIL import Image
 from scipy import misc
+import numpy as np
 
 def files_in_folder(folder, format="jpeg"):
 	"""
 	return a list of file names in folder
 	"""
+	try: os.stat(folder)
+	except: 
+		print("{} is not a valid path!".format(folder))
+		return
 	imgs = [p[2] for p in walk(folder)][0]
 	imgs = list(filter(lambda x:  x.endswith(format), imgs))
 	return imgs
 
-
+def rgb2gray(rgb):
+	"""
+	Dimension:  [H, W, 3] -> [H, W]
+	Type:       uint8 [0, 255] -> float32 [0, 1]
+	"""
+	return np.dot(rgb[...,:3], [0.299, 0.587, 0.114])/255
 
 def imgs_in_folder(folder, format="jpeg"):
-	return [misc.imread(os.path.join(folder, x)) for x in files_in_folder(folder, format=format)]
+	imgs = [misc.imread(os.path.join(folder, x)) for x in files_in_folder(folder, format=format)]
+	assert len(imgs)>0, "No images in folder!"
+	return imgs
 
 
 def merge(end_points, mid):
