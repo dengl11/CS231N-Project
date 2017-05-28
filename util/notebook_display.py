@@ -6,7 +6,8 @@ def disable_axis(ax):
 	ax.set_yticklabels([])
 
 
-def plot_img(img):
+def plot_img(img, size = (2,2)):
+    plt.figure(figsize=size)
     ax = plt.subplot(1,1,1)
     plt.imshow(img)
     disable_axis(ax)

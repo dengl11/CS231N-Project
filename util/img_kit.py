@@ -20,6 +20,11 @@ def files_in_folder(folder, format="jpeg"):
 	imgs = list(filter(lambda x:  x.endswith(format), imgs))
 	return imgs
 
+
+def filter_files(files):
+	return list(filter(lambda x: not x.startswith('.'), files))
+
+
 def rgb2gray(rgb):
 	"""
 	Dimension:  [H, W, 3] -> [H, W]
