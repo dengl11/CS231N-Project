@@ -32,6 +32,15 @@ def sample_and_show(imgs):
     plot_img(sample)
     return sample
 
+def sample_pred_frames(imgs, gap = 3, num = 6, inorder=True):
+    n = imgs.shape[0]
+    before = np.random.choice(range(n-gap-1), num, replace=False)
+    if inorder: before.sort()
+    after = before + gap +1
+    mid = (before + after)//2
+    return (imgs[before], imgs[after], imgs[mid])
+
+
 
 def plot_images(imgs, size = (12, 6), title=None, sub_titles=[]):
     """
