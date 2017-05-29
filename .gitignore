@@ -13,6 +13,7 @@ __pycache__
 # Data Folder #
 ######################
 data/
+!data/moving-box/processed/*
 output/
 tmp/
 
