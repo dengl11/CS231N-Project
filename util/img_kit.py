@@ -58,6 +58,14 @@ def get_processed_moving_box(augment = False):
     if augment: img_collections = augment_data(img_collections)
     return img_collections
 
+def get_processed_moving_box_squares(augment = False):
+	folder = "data/moving-box/processed/Box"
+	data_collection = [p[2] for p in walk(folder)][0]
+	data_collection = filter_files(data_collection)
+	img_collections = [load_imgs(os.path.join(folder, f)) for f in data_collection]
+	if augment: img_collections = augment_data(img_collections)
+	return img_collections
+
 def rgb2gray(rgb):
 	"""
 	Dimension:  [H, W, 3] -> [H, W]
