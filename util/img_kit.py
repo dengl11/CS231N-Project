@@ -50,7 +50,7 @@ def load_imgs(file):
     print(info)
     return imgs
 
-def get_process_moving_box(augment = False):
+def get_processed_moving_box(augment = False):
     folder = "data/moving-box/processed"
     data_collection = [p[2] for p in walk(folder)][0]
     data_collection = filter_files(data_collection)
