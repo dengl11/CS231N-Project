@@ -60,6 +60,38 @@ class data_loader(object):
 		y_batch = self.data[rand_incies, :, :, :]
 		return(X_batch, y_batch)
 
+	def get_minibatches(self, minibatch_size = 16, training=True):
+		"""
+		Iterates through the provided data one minibatch at at time. You can use this function to
+		iterate through data in minibatches for ONE epoch:
+		    for batch_x, batch_y in get_minibatches(inputs, minibatch_size):
+		        train on this batch...
+		"""
+		if training:
+			cur_start_idx = self.train_x_start_index
+			cur_end_idx = self.train_x_end_index
+			cur_y_idx = self.train_y_index
+		else:
+			cur_start_idx = self.test_x_start_index
+			cur_end_idx = self.test_x_end_index
+			cur_y_idx = self.test_y_index
+		data_size = len(self.train_x_start_index)
+		indices = np.arange(data_size)
+		for minibatch_start in np.arange(0, data_size, minibatch_size):
+			start = minibatch_start
+			end = minibatch_start + minibatch_size
+			yield self.minibatch(start, end, cur_start_idx, cur_end_idx, cur_y_idx)
+
+	def minibatch(self, start, end, start_idx, end_idx, mid_idx):
+		left_frame = np.asarray(start_idx[start:end])
+		right_frame = np.asarray(end_idx[start:end])
+		mid_frame = np.asarray(mid_idx[start:end])
+		X = np.concatenate([self.data[left_frame, :, :, :], self.data[right_frame, :, :, :]], axis = 3)
+		y = self.data[mid_frame, :, :, :]
+		return (X, y)
+	
+
+
 
 
 		
