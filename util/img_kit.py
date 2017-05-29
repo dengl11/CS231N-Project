@@ -20,10 +20,43 @@ def files_in_folder(folder, format="jpeg"):
 	imgs = list(filter(lambda x:  x.endswith(format), imgs))
 	return imgs
 
+def flipped_frames(frames):
+    return frames[::-1]
+
 
 def filter_files(files):
 	return list(filter(lambda x: not x.startswith('.'), files))
 
+def split_train_dev(data, train_ratio = 0.8):
+    """
+    Input:
+        data: np array
+    Return:
+        train_ind: index of training data
+        val_ind:   index of validation data
+    """
+    n = data.shape[0]
+    num_train = int(n*train_ratio)
+    train_ind = np.random.choice(range(n), num_train, replace=False)
+    train_ind.sort()
+    val_ind = list(set(range(n)) - set(train_ind))
+    val_ind.sort()
+    return train_ind, val_ind
+
+
+def load_imgs(file):
+    data = np.load(file)
+    imgs, info = data['imgs'], data['info']
+    print(info)
+    return imgs
+
+def get_processed_moving_box(augment = False):
+    folder = "data/moving-box/processed"
+    data_collection = [p[2] for p in walk(folder)][0]
+    data_collection = filter_files(data_collection)
+    img_collections = [load_imgs(os.path.join(folder, f)) for f in data_collection]
+    if augment: img_collections = augment_data(img_collections)
+    return img_collections
 
 def rgb2gray(rgb):
 	"""
