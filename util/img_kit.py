@@ -7,6 +7,7 @@ from PIL import Image
 from scipy import misc
 import numpy as np
 from scipy.misc import *
+from itertools import product
 
 def files_in_folder(folder, format="jpeg"):
 	"""
@@ -50,9 +51,22 @@ def load_imgs(file):
     print(info)
     return imgs
 
+def add_background_to_img(img, background):
+	return img + background
+
+def add_background_to_imgs(imgs, background):
+	return [add_background_to_img(imgs, b) for b in background]
+
+def augment_add_background(collections):
+	background = load_imgs("data/moving-box/processed/background.npz")
+	ans = collections[:]
+	for x in collections:
+		ans += add_background_to_imgs(x, background)
+	return ans
 
 def augment_data(collections):
 	collections = augment_reverse_sequence(collections)
+	collections = augment_add_background(collections)
 	# collections = augment_reverse_color(collections)
 	return collections
 	
@@ -95,20 +109,20 @@ def get_collection(folder, augment=False):
 
 
 def get_processed_moving_box(augment = False):
-    return get_collection("data/moving-box/processed")
+    return get_collection("data/moving-box/processed", augment)
     
 
 def get_processed_moving_box_squares(augment = False):
-	return get_collection("data/moving-box/processed/Box")
+	return get_collection("data/moving-box/processed/Box", augment)
 
 def get_processed_diamond(augment = False):
-	return get_collection("data/moving-box/processed/diamond")
+	return get_collection("data/moving-box/processed/diamond", augment)
 
 def get_processed_rectangle(augment = False):
-	return get_collection("data/moving-box/processed/rectangle")
+	return get_collection("data/moving-box/processed/rectangle", augment)
 
 def get_processed_cirlce(augment = False):
-	return get_collection("data/moving-box/processed/circle")
+	return get_collection("data/moving-box/processed/circle", augment)
 
 
 def rgb2gray(rgb):
