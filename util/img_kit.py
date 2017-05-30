@@ -53,7 +53,7 @@ def load_imgs(file):
 
 def augment_data(collections):
 	collections = augment_reverse_sequence(collections)
-	collections = augment_reverse_color(collections)
+	# collections = augment_reverse_color(collections)
 	return collections
 	
 
