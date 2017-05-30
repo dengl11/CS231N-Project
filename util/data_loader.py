@@ -20,12 +20,12 @@ class data_loader(object):
 		print("Data Shape {}".format(self.data.shape))
 		print("train: {0}   test: {1}".format(len(self.train_x_start_index), len(self.test_x_start_index)))
 	
-	def train_test_split(self, train_percent = 0.8):
-		# 80% of the video as train and 20% test
+	def train_test_split(self):
+		# last two videos as test
 		train_index = []
 		test_index = []
-		train_video = list(range(int(train_percent * len(self.metadata))))
-		test_video = list(range(int(train_percent * len(self.metadata)), len(self.metadata)))
+		train_video = list(range(len(self.metadata) - 2))
+		test_video = list(range(len(self.metadata) - 2, len(self.metadata)))
 		# training set
 		self.train_x_start_index, self.train_x_end_index, self.train_y_index = self.generate_index(train_video)
 		# test set

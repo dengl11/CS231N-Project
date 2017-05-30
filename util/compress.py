@@ -14,7 +14,6 @@ for i in file_names:
 data = np.concatenate([i[np.newaxis, ...] for i in resized_img_array], axis=0)
 
 print("Data loaded! Shape: {}".format(data.shape))
-save_path = "data/kitti-compressed-resized"
+save_path = "data/kitti_full_compressed"
 np.save(save_path, data)
 print("Saved to:  {}".format(save_path))
-		
