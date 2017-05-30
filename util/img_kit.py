@@ -104,6 +104,11 @@ def get_processed_moving_box_squares(augment = False):
 def get_processed_diamond(augment = False):
 	return get_collection("data/moving-box/processed/diamond")
 
+def get_processed_rectangle(augment = False):
+	return get_collection("data/moving-box/processed/rectangle")
+
+def get_processed_cirlce(augment = False):
+	return get_collection("data/moving-box/processed/circle")
 
 
 def rgb2gray(rgb):
