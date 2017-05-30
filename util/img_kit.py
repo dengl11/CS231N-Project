@@ -181,4 +181,8 @@ def resize_all(input_folder, output_folder, size):
 
 def avg_imges(x1, x2, dtype='uint8'):
     return np.array([x1, x2]).mean(axis=0).astype(dtype)
+
+
+def scale_loss(loss, init_range): 
+	return loss * 255 / init_range
  	
