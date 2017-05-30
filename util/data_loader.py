@@ -25,7 +25,7 @@ class data_loader(object):
 		train_index = []
 		test_index = []
 		train_video = list(range(len(self.metadata) - 2))
-		test_video = list(range(len(self.metadata) - 2), len(self.metadata))
+		test_video = list(range(len(self.metadata) - 2, len(self.metadata)))
 		# training set
 		self.train_x_start_index, self.train_x_end_index, self.train_y_index = self.generate_index(train_video)
 		# test set
