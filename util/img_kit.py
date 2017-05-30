@@ -50,6 +50,43 @@ def load_imgs(file):
     print(info)
     return imgs
 
+
+def augment_data(collections):
+	collections = augment_reverse_sequence(collections)
+	collections = augment_reverse_color(collections)
+	return collections
+	
+
+def augment_reverse_sequence(collections):
+	return collections + [x[::-1] for x in collections]
+	
+
+def reverse_color(imgs):
+	"""
+	Input:
+		imgs: np array between [0, 1]
+	Output:
+		np array between [0, 1]
+	"""
+	return 1-imgs
+
+def augment_reverse_color(collections):
+	return collections + [reverse_color(x) for x in collections]
+
+
+def center_imgs(imgs):
+	"""
+	Input:
+		imgs: np array between [0, 1]
+	Output:
+		np array between [-1, 1]
+	"""
+	return 2*imgs - 1
+
+def center_collections(collections):
+	return [center_imgs(x) for x in collections]
+
+
 def get_processed_moving_box(augment = False):
     folder = "data/moving-box/processed"
     data_collection = [p[2] for p in walk(folder)][0]
