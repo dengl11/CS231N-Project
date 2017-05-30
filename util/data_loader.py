@@ -21,11 +21,11 @@ class data_loader(object):
 		print("train: {0}   test: {1}".format(len(self.train_x_start_index), len(self.test_x_start_index)))
 	
 	def train_test_split(self):
-		# last video as test
+		# last two videos as test
 		train_index = []
 		test_index = []
-		train_video = list(range(len(self.metadata) - 1))
-		test_video = len(self.metadata) - 1
+		train_video = list(range(len(self.metadata) - 2))
+		test_video = list(range(len(self.metadata) - 2), len(self.metadata))
 		# training set
 		self.train_x_start_index, self.train_x_end_index, self.train_y_index = self.generate_index(train_video)
 		# test set
