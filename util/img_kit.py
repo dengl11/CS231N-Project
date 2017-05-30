@@ -86,22 +86,25 @@ def center_imgs(imgs):
 def center_collections(collections):
 	return [center_imgs(x) for x in collections]
 
-
-def get_processed_moving_box(augment = False):
-    folder = "data/moving-box/processed"
-    data_collection = [p[2] for p in walk(folder)][0]
-    data_collection = filter_files(data_collection)
-    img_collections = [load_imgs(os.path.join(folder, f)) for f in data_collection]
-    if augment: img_collections = augment_data(img_collections)
-    return img_collections
-
-def get_processed_moving_box_squares(augment = False):
-	folder = "data/moving-box/processed/Box"
+def get_collection(folder, augment=False):
 	data_collection = [p[2] for p in walk(folder)][0]
 	data_collection = filter_files(data_collection)
 	img_collections = [load_imgs(os.path.join(folder, f)) for f in data_collection]
 	if augment: img_collections = augment_data(img_collections)
 	return img_collections
+
+
+def get_processed_moving_box(augment = False):
+    return get_collection("data/moving-box/processed")
+    
+
+def get_processed_moving_box_squares(augment = False):
+	return get_collection("data/moving-box/processed/Box")
+
+def get_processed_diamond(augment = False):
+	return get_collection("data/moving-box/processed/diamond")
+
+
 
 def rgb2gray(rgb):
 	"""
