@@ -85,8 +85,11 @@ def reverse_color(imgs):
 	return 1-imgs
 
 def augment_reverse_color(collections):
-	return collections + [reverse_color(x) for x in collections]
+	return collections + collection_reverse_color(collections)
 
+
+def collection_reverse_color(collection):
+	return [reverse_color(x) for x in collection]
 
 def center_imgs(imgs):
 	"""
