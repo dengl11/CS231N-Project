@@ -66,8 +66,8 @@ def augment_add_background(collections):
 
 def augment_data(collections):
 	collections = augment_reverse_sequence(collections)
-	collections = augment_add_background(collections)
-	# collections = augment_reverse_color(collections)
+	# collections = augment_add_background(collections)
+	collections = augment_reverse_color(collections)
 	return collections
 	
 
