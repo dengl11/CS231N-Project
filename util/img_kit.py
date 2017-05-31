@@ -7,6 +7,7 @@ from PIL import Image
 from scipy import misc
 import numpy as np
 from scipy.misc import *
+from itertools import product
 
 def files_in_folder(folder, format="jpeg"):
 	"""
@@ -50,21 +51,79 @@ def load_imgs(file):
     print(info)
     return imgs
 
-def get_processed_moving_box(augment = False):
-    folder = "data/moving-box/processed"
-    data_collection = [p[2] for p in walk(folder)][0]
-    data_collection = filter_files(data_collection)
-    img_collections = [load_imgs(os.path.join(folder, f)) for f in data_collection]
-    if augment: img_collections = augment_data(img_collections)
-    return img_collections
+def add_background_to_img(img, background):
+	return img + background
 
-def get_processed_moving_box_squares(augment = False):
-	folder = "data/moving-box/processed/Box"
+def add_background_to_imgs(imgs, background):
+	return [add_background_to_img(imgs, b) for b in background]
+
+def augment_add_background(collections):
+	background = load_imgs("data/moving-box/processed/background.npz")
+	ans = collections[:]
+	for x in collections:
+		ans += add_background_to_imgs(x, background)
+	return ans
+
+def augment_data(collections):
+	collections = augment_reverse_sequence(collections)
+	collections = augment_add_background(collections)
+	# collections = augment_reverse_color(collections)
+	return collections
+	
+
+def augment_reverse_sequence(collections):
+	return collections + [x[::-1] for x in collections]
+	
+
+def reverse_color(imgs):
+	"""
+	Input:
+		imgs: np array between [0, 1]
+	Output:
+		np array between [0, 1]
+	"""
+	return 1-imgs
+
+def augment_reverse_color(collections):
+	return collections + [reverse_color(x) for x in collections]
+
+
+def center_imgs(imgs):
+	"""
+	Input:
+		imgs: np array between [0, 1]
+	Output:
+		np array between [-1, 1]
+	"""
+	return 2*imgs - 1
+
+def center_collections(collections):
+	return [center_imgs(x) for x in collections]
+
+def get_collection(folder, augment=False):
 	data_collection = [p[2] for p in walk(folder)][0]
 	data_collection = filter_files(data_collection)
 	img_collections = [load_imgs(os.path.join(folder, f)) for f in data_collection]
 	if augment: img_collections = augment_data(img_collections)
 	return img_collections
+
+
+def get_processed_moving_box(augment = False):
+    return get_collection("data/moving-box/processed", augment)
+    
+
+def get_processed_moving_box_squares(augment = False):
+	return get_collection("data/moving-box/processed/Box", augment)
+
+def get_processed_diamond(augment = False):
+	return get_collection("data/moving-box/processed/diamond", augment)
+
+def get_processed_rectangle(augment = False):
+	return get_collection("data/moving-box/processed/rectangle", augment)
+
+def get_processed_cirlce(augment = False):
+	return get_collection("data/moving-box/processed/circle", augment)
+
 
 def rgb2gray(rgb):
 	"""
@@ -136,4 +195,8 @@ def resize_all(input_folder, output_folder, size):
 
 def avg_imges(x1, x2, dtype='uint8'):
     return np.array([x1, x2]).mean(axis=0).astype(dtype)
+
+
+def scale_loss(loss, init_range): 
+	return loss * 255 / init_range
  	

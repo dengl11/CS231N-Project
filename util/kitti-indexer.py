@@ -15,7 +15,7 @@ def create_metadata(data_folder):
 	count = -1
 	metadata = {}
 	# filter out .DS_Store
-	videos = [i for i in os.listdir(data_folder) if i != '.DS_Store']
+	videos = sorted([i for i in os.listdir(data_folder) if i != '.DS_Store'])
 	for video in videos:
 		if video not in metadata:
 			metadata[video] = []
