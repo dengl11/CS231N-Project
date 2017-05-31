@@ -27,9 +27,9 @@ def sample_img_many(imgs, num, inorder=True):
     return imgs[np.random.choice(range(len(imgs)), num, replace=False)]
 
 
-def sample_and_show(imgs):
+def sample_and_show(imgs, size = (12, 6)):
     sample = sample_img(imgs)
-    plot_img(sample)
+    plot_img(sample, size = size)
     return sample
 
 def sample_pred_frames(imgs, gap = 3, num = 6, inorder=True):
@@ -66,7 +66,8 @@ def plot_batch_images(imgs, size = (12, 6), title=None):
     plot_images(imgs, size, title)
 
 
-def sample_and_show_many(imgs, num):
-    samples = sample_img_many(imgs, num)
-    plot_images(samples)
+def sample_and_show_many(imgs, num, size = (12, 6), inorder=True):
+    samples = sample_img_many(imgs, num, inorder = inorder)
+    plot_images(samples, size = size)
+    return samples
     
