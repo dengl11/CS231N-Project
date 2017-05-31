@@ -55,7 +55,7 @@ def add_background_to_img(img, background):
 	return img + background
 
 def add_background_to_imgs(imgs, background):
-	return [add_background_to_img(imgs, b) for b in background]
+	return [add_background_to_img(imgs, b) for b in background[1:2]]
 
 def augment_add_background(collections):
 	background = load_imgs("data/moving-box/processed/background.npz")
