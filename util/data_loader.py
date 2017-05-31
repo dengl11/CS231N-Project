@@ -4,7 +4,7 @@ import json, time
 
 
 class data_loader(object):
-	def __init__(self, data_src, metadata_src, gap = 1):
+	def __init__(self, data_src, metadata_src, gap = 2):
 		## loading data file and metadata
 		time1 = time.time()
 		self.data_src = data_src
