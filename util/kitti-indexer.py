@@ -33,5 +33,5 @@ os.chdir('..')
 cwd = os.getcwd()
 data_fld = os.path.join(cwd, 'data','kitti_data')
 metadata = create_metadata(data_fld)
-with open('data/kitti_metadata.json', 'w') as outfile:
+with open('data/kitti_full_metadata.json', 'w') as outfile:
     json.dump(metadata, outfile)
