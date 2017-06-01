@@ -27,15 +27,14 @@ def main():
 	learning_rate = 1e-3
 	decay_rate = None
 	model_name = 'deep_CNN'
-	num_epochs = 3
+	num_epochs = 2 
 	#################################################################
-	train_dir = 'saved_model/' + model_name + "/"
+	train_dir = 'saved_model/' + model_name 
 	if not os.path.exists(train_dir):
 		os.makedirs(train_dir)
-	result_dir = 'result_plot/' + model_name + "/"
+	result_dir = 'result_plot/' + model_name
 	if not os.path.exists(result_dir):
 		os.makedirs(result_dir)
-	
 	# mini dataset
 	dataset = data_loader('data/kitti_mini.npy', 'data/kitti_mini_metadata.json')
 	# # full dataset
@@ -82,10 +81,10 @@ def main():
 	    test_loss = sum(test_epoch_loss)/len(test_epoch_loss)
 	    test_loss_history.append(test_loss)
 	    print("Mean Test Batch Loss: {:.3e}".format(test_loss))
-	    if best_test_loss == None or test_loss < best_test_loss:
-	    	model.saver.save(sess, train_dir)
-	plt.plot(history)
-	plt.savefig(result_dir+'loss_curve.png')
+	if best_test_loss == None or test_loss < best_test_loss:
+		print("New best dev score! Saving model in {}".format(train_dir))
+		model.saver.save(sess, train_dir)
+
 
 if __name__ == '__main__':
-  main()
+	main()
