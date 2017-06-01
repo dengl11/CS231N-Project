@@ -1,4 +1,13 @@
 import tensorflow as tf
+import time, os, sys
+import matplotlib.pyplot as plt
+from tqdm import tqdm
+import numpy as np
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+plt.rcParams['image.interpolation'] = 'nearest'
+plt.rcParams['figure.figsize'] = (20, 20) # set default size of plots
+plt.rcParams['image.cmap'] = 'gray'
+
 
 def setup_model(X,y):
 	    conv_block1 = conv_block(X, 48, (3,3))
@@ -64,13 +73,66 @@ def parametric_relu(x):
 
 
 class deep_CNN_model(object):
-	def __init__(self):
+	def __init__(self, learning_rate, model_name, num_epochs, dataset, train_dir, decay_rate = None):
 		epsilon = 0.1
 		tf.reset_default_graph()
+		self.train_dir = train_dir
 		self.X = tf.placeholder(tf.float32, [None, 128, 384, 6])
 		self.y = tf.placeholder(tf.float32, [None, 128, 384, 3])
 		self.y_out = setup_model(self.X, self.y)
+		self.learning_rate = learning_rate
+		self.model_name = model_name
+		self.num_epochs = num_epochs
+		self.dataset = dataset
 		# Charbonnier Loss
 		epsilon = 0.1
 		self.loss = tf.reduce_sum(tf.sqrt((self.y_out - self.y) ** 2 + epsilon ** 2))
+		## Optimizer
+		if decay_rate is None:
+			self.optimizer = tf.train.AdamOptimizer(learning_rate)
+			# batch normalization in tensorflow requires this extra dependency
+			extra_update_ops = tf.get_collection(tf.GraphKeys.UPDATE_OPS)
+			with tf.control_dependencies(extra_update_ops):
+				self.train_step = self.optimizer.minimize(self.loss)
+				pass
 		self.saver = tf.train.Saver()
+		
+
+	def train(self, sess):
+		train_variables = [self.loss, self.train_step]
+		test_variables = [self.loss]
+		history = []
+		train_loss_history = []
+		test_loss_history = []
+		best_test_loss = None
+		print("updated!")
+		################## training loop ##################
+		for e in range(self.num_epochs):
+			batch_num = 0
+			epoch_loss = []
+			epoch_start = time.time()
+			print("Training Epoch {}".format(e+1))
+			pbar = tqdm(self.dataset.get_minibatches(), total = int(len(self.dataset.train_x_start_index)/16))
+			for batch_x, batch_y in pbar:
+				loss, _ = sess.run(train_variables,feed_dict={self.X: batch_x, self.y: batch_y})
+				pbar.set_postfix(loss = "{:.3e}".format(loss))
+				pbar.update()
+				batch_num += 1
+				history.append(loss)
+				epoch_loss.append(loss)
+			epoch_end = time.time()
+			train_loss = sum(epoch_loss)/len(epoch_loss)
+			train_loss_history.append(train_loss)
+			print('epoch: {0} Mean Loss {1:.3e} Time: {2:.1f}seconds'.format(e+1, train_loss, epoch_end - epoch_start))
+			print("Validating with Test set")
+			test_epoch_loss = []
+			for batch_x, batch_y in self.dataset.get_minibatches(training = False):
+				loss = sess.run(test_variables,feed_dict={self.X: batch_x, self.y: batch_y})[0]
+				test_epoch_loss.append(loss)
+			test_loss = sum(test_epoch_loss)/len(test_epoch_loss)
+			test_loss_history.append(test_loss)
+			print("Mean Test Batch Loss: {:.3e}".format(test_loss))
+			if best_test_loss is None or test_loss < best_test_loss:
+				print("New best dev score! Saving model in {}".format(self.train_dir))
+				self.saver.save(sess, self.train_dir + self.model_name)
+
