@@ -47,17 +47,20 @@ class data_loader(object):
 	        y_index += [self.metadata[self.video_names[i]][j] for j in mid_index]
 	    return (x_start_index, x_end_index, y_index)
 
-	def get_batch(self, batch_size = 8, training = True):
+	def get_batch(self, indices, training = True):
+		### getting a batch of data with desinated indices
 		if training:
-			rand_incies = np.random.choice(self.train_x_start_index, size = batch_size)
-			start_frames = self.data[rand_incies, :, :, :]
-			end_frames = self.data[rand_incies, :, :, :]
+			start_indices = np.asarray(self.train_x_start_index[indices])
+			end_indices = np.asarray(self.train_x_end_index[indices])
+			mid_indices = np.asarray(self.train_y_index[indices])
 		else:
-			rand_incies = np.random.choice(self.test_x_start_index, size = batch_size)
-			start_frames = self.data[rand_incies, :, :, :]
-			end_frames = self.data[rand_incies, :, :, :]
+			start_indices = np.asarray(self.test_x_start_index[indices])
+			end_indices = np.asarray(self.test_x_end_index[indices])
+			mid_indices = np.asarray(self.test_y_index[indices])
+		start_frames = self.data[start_indices, :, :, :]
+		end_frames = self.data[end_indices, :, :, :]
 		X_batch = np.concatenate([start_frames, end_frames], axis = 3)
-		y_batch = self.data[rand_incies, :, :, :]
+		y_batch = self.data[mid_indices, :, :, :]
 		return(X_batch, y_batch)
 
 	def get_minibatches(self, minibatch_size = 16, training=True):
