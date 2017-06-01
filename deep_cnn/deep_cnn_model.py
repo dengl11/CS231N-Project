@@ -1,5 +1,7 @@
 import tensorflow as tf
 import time, os, sys
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 import numpy as np
@@ -71,9 +73,35 @@ def parametric_relu(x):
         h = tf.maximum(alpha * tf.ones_like(x), x)
     return h
 
+def plot_and_save(batch_x, batch_y, pred, title, save_path, size = (24, 16)):
+	"""
+    Input: 
+        imgs: [image]
+    """
+	fig = plt.figure(figsize=size)
+	N = batch_x.shape[0]
+	f, axarr = plt.subplots(N,4, sharex=True)
+	#plt.tick_params(axis='both', which='both', bottom='off', top='off', labelbottom='off', right='off', left='off', labelleft='off')
+	for ind in range(N):
+		axarr[ind][0].imshow((batch_x[ind,:,:,:3]).astype('uint8'))
+		axarr[ind][1].imshow((batch_x[ind,:,:,3:]).astype('uint8'))
+		axarr[ind][2].imshow((batch_y[ind,:,:,:]).astype('uint8'))
+		axarr[ind][3].imshow((pred[ind,:,:,:]).astype('uint8'))
+		axarr[ind][0].axis('off')
+		axarr[ind][1].axis('off')
+		axarr[ind][2].axis('off')
+		axarr[ind][3].axis('off')
+		if ind == 0:
+			axarr[ind][0].set_title('Before', fontsize=18)
+			axarr[ind][1].set_title('After', fontsize=18)
+			axarr[ind][2].set_title('Mid - Grount Truth', fontsize=18)
+			axarr[ind][3].set_title('Mid - Predicted', fontsize=18)
+	plt.suptitle(title, fontsize=20)
+	plt.savefig(save_path)
+
 
 class deep_CNN_model(object):
-	def __init__(self, learning_rate, model_name, num_epochs, dataset, train_dir, decay_rate = None):
+	def __init__(self, learning_rate, model_name, num_epochs, dataset, train_dir, result_dir, decay_rate = None):
 		epsilon = 0.1
 		tf.reset_default_graph()
 		self.train_dir = train_dir
@@ -84,6 +112,8 @@ class deep_CNN_model(object):
 		self.model_name = model_name
 		self.num_epochs = num_epochs
 		self.dataset = dataset
+		self.train_dir = train_dir
+		self.result_dir = result_dir
 		# Charbonnier Loss
 		epsilon = 0.1
 		self.loss = tf.reduce_sum(tf.sqrt((self.y_out - self.y) ** 2 + epsilon ** 2))
@@ -100,7 +130,7 @@ class deep_CNN_model(object):
 
 	def train(self, sess):
 		train_variables = [self.loss, self.train_step]
-		test_variables = [self.loss]
+		test_variables = [self.loss, self.y_out]
 		history = []
 		train_loss_history = []
 		test_loss_history = []
@@ -134,4 +164,13 @@ class deep_CNN_model(object):
 			if best_test_loss is None or test_loss < best_test_loss:
 				print("New best dev score! Saving model in {}".format(self.train_dir))
 				self.saver.save(sess, self.train_dir + self.model_name)
+			########## Plotting ##########
+			print("Generating Comparison Plot for Epoch {}".format(e+1))
+			plot_size = (24,10)
+			vis_x, vis_y = self.dataset.get_batch([0, 50, 75, 100, 125, 200, 250, 300])
+			pred = sess.run(test_variables,feed_dict={self.X: vis_x, self.y: vis_y})[1]
+			plot_title = 'Model: {0} Epoch: {1}'.format(self.model_name, e+1)
+			save_path = self.result_dir + 'epoch_{}.png'.format(e+1)
+			plot_and_save(vis_x, vis_y, pred, plot_title, save_path, size = (24, 16))
+
 
