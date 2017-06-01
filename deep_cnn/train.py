@@ -29,10 +29,10 @@ def main():
 	result_dir = 'result_plot/{}/'.format(model_name)
 	if not os.path.exists(result_dir):
 		os.makedirs(result_dir)
-	# # mini dataset
-	# dataset = data_loader('data/kitti_mini.npy', 'data/kitti_mini_metadata.json')
 	# full dataset
 	dataset = data_loader('data/kitti_full.npy', 'data/kitti_full_metadata.json')
+	# # mini dataset
+	# dataset = data_loader('data/kitti_mini.npy', 'data/kitti_mini_metadata.json')
 	model = deep_CNN_model(learning_rate, model_name, num_epochs, dataset, train_dir, result_dir)
 	sess =  tf.Session()
 	model = initialize_model(sess, model, train_dir)
