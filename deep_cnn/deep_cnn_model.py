@@ -105,7 +105,6 @@ class deep_CNN_model(object):
 		train_loss_history = []
 		test_loss_history = []
 		best_test_loss = None
-		print("updated!")
 		################## training loop ##################
 		for e in range(self.num_epochs):
 			batch_num = 0

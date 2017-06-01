@@ -6,13 +6,6 @@ def disable_axis(ax):
 	ax.set_yticklabels([])
 
 
-def plot_img(img, size = (2,2)):
-    plt.figure(figsize=size)
-    ax = plt.subplot(1,1,1)
-    plt.imshow(img)
-    disable_axis(ax)
-
-
 def sample_img(imgs):
     return imgs[np.random.choice(range(len(imgs)))]
 
@@ -41,12 +34,14 @@ def sample_pred_frames(imgs, gap = 3, num = 6, inorder=True):
     return (imgs[before], imgs[after], imgs[mid])
 
 
-def plot_img(img):
+def plot_img(img, size = None, ax=None):
     max_val = np.max(img)
+    if size: plt.figure(figsize=size)
     if 'float' in str(img.dtype) and max_val < 10:
         plt.imshow(convert_for_display(img))
     else:
         plt.imshow(img)
+    if ax: disable_axis(ax)
 
 
 def convert_for_display(img_batch):
@@ -71,6 +66,17 @@ def plot_images(imgs, size = (12, 6), title=None, sub_titles=[]):
         disable_axis(ax)
     if title: plt.suptitle(title)
     plt.show()
+
+
+
+def plot_images_ndarray(imgs, size = (12, 6), title=None, sub_titles=[]):
+    """
+    Input: 
+        imgs: nd array
+    """
+    plot_images(list(imgs), size = size, title=title, sub_titles=sub_titles)
+
+
 
 def plot_batch_images(imgs, size = (12, 6), title=None):
     """
