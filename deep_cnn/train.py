@@ -19,9 +19,9 @@ def initialize_model(session, model, train_dir):
 def main():
 	######################### Hyperparameter#########################
 	learning_rate = 1e-3
-	decay_rate = None
+	decay_rate = 0.9  # decay per epoch
 	model_name = 'deep_CNN'
-	num_epochs = 2
+	num_epochs = 10
 	#################################################################
 	train_dir = 'saved_model/{}/'.format(model_name)
 	if not os.path.exists(train_dir):
@@ -29,11 +29,11 @@ def main():
 	result_dir = 'result_plot/{}/'.format(model_name)
 	if not os.path.exists(result_dir):
 		os.makedirs(result_dir)
-	# mini dataset
-	dataset = data_loader('data/kitti_mini.npy', 'data/kitti_mini_metadata.json')
-	# # full dataset
-	# dataset = data_loader('data/kitti_full.npy', 'data/kitti_full_metadata.json')
-	model = deep_CNN_model(learning_rate, model_name, num_epochs, dataset, train_dir)
+	# # mini dataset
+	# dataset = data_loader('data/kitti_mini.npy', 'data/kitti_mini_metadata.json')
+	# full dataset
+	dataset = data_loader('data/kitti_full.npy', 'data/kitti_full_metadata.json')
+	model = deep_CNN_model(learning_rate, model_name, num_epochs, dataset, train_dir, result_dir)
 	sess =  tf.Session()
 	model = initialize_model(sess, model, train_dir)
 	model.train(sess)
