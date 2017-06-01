@@ -50,13 +50,13 @@ class data_loader(object):
 	def get_batch(self, indices, training = True):
 		### getting a batch of data with desinated indices
 		if training:
-			start_indices = np.asarray(self.train_x_start_index[indices])
-			end_indices = np.asarray(self.train_x_end_index[indices])
-			mid_indices = np.asarray(self.train_y_index[indices])
+			start_indices = np.asarray([self.train_x_start_index[i] for i in indices])
+			end_indices = np.asarray([self.train_x_end_index[i] for i in indices])
+			mid_indices = np.asarray([self.train_y_index[i] for i in indices])
 		else:
-			start_indices = np.asarray(self.test_x_start_index[indices])
-			end_indices = np.asarray(self.test_x_end_index[indices])
-			mid_indices = np.asarray(self.test_y_index[indices])
+			start_indices = np.asarray([self.test_x_start_index[i] for i in indices])
+			end_indices = np.asarray([self.test_x_end_index[i] for i in indices])
+			mid_indices = np.asarray([self.test_y_index[i] for i in indices])
 		start_frames = self.data[start_indices, :, :, :]
 		end_frames = self.data[end_indices, :, :, :]
 		X_batch = np.concatenate([start_frames, end_frames], axis = 3)
@@ -74,12 +74,12 @@ class data_loader(object):
 			cur_start_idx = self.train_x_start_index
 			cur_end_idx = self.train_x_end_index
 			cur_y_idx = self.train_y_index
+			data_size = len(self.train_x_start_index)
 		else:
 			cur_start_idx = self.test_x_start_index
 			cur_end_idx = self.test_x_end_index
 			cur_y_idx = self.test_y_index
-		data_size = len(self.train_x_start_index)
-		indices = np.arange(data_size)
+			data_size = len(self.test_x_start_index)
 		for minibatch_start in np.arange(0, data_size, minibatch_size):
 			start = minibatch_start
 			end = minibatch_start + minibatch_size
