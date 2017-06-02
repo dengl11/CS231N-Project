@@ -16,7 +16,7 @@ class data_loader(object):
 			self.metadata = json.load(metadata_file)
 		self.video_names = sorted(list(self.metadata.keys()))
 		self.train_test_split()
-		self.preprocess_data()
+		self.mean_image = np.mean(self.data[self.train_x_start_index, :, :, :], axis = 0)
 		time2 = time.time()
 		print("Data loaded! Took {:.2f} seconds".format(time2 - time1))
 		print("Data Shape {}".format(self.data.shape))
@@ -33,12 +33,9 @@ class data_loader(object):
 		# test set
 		self.test_x_start_index, self.test_x_end_index, self.test_y_index = self.generate_index(test_video)
 
-	def preprocess_data(self):
-		# convert to float
-		data = self.data / 255
-		## centering by mean train image
-		self.mean_image = np.mean(self.data[self.train_x_start_index, :, :, :], axis = 0)
-		self.data = self.data - self.mean_image
+	def preprocess_batch(self, batch_x, batch_y):
+		return(batch_x - self.mean_image, batch_y - self.mean_image)
+	
 
 	def generate_index(self, clip_indices):
 	    x_start_index = []
@@ -69,7 +66,7 @@ class data_loader(object):
 		end_frames = self.data[end_indices, :, :, :]
 		X_batch = np.concatenate([start_frames, end_frames], axis = 3)
 		y_batch = self.data[mid_indices, :, :, :]
-		return(X_batch, y_batch)
+		return(self.preprocess_batch(X_batch, y_batch))
 
 	def get_minibatches(self, minibatch_size = 16, training=True):
 		"""
@@ -99,7 +96,7 @@ class data_loader(object):
 		mid_frame = np.asarray(mid_idx[start:end])
 		X = np.concatenate([self.data[left_frame, :, :, :], self.data[right_frame, :, :, :]], axis = 3)
 		y = self.data[mid_frame, :, :, :]
-		return (X, y)
+		return self.preprocess_batch(X, y)
 	
 
 
