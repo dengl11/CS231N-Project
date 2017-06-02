@@ -10,11 +10,13 @@ class data_loader(object):
 		self.data_src = data_src
 		self.metadata_src = metadata_src
 		self.gap = gap
+		## convert to float
 		self.data = np.load(data_src)
 		with open(metadata_src) as metadata_file:
 			self.metadata = json.load(metadata_file)
 		self.video_names = sorted(list(self.metadata.keys()))
 		self.train_test_split()
+		self.preprocess_data()
 		time2 = time.time()
 		print("Data loaded! Took {:.2f} seconds".format(time2 - time1))
 		print("Data Shape {}".format(self.data.shape))
@@ -31,6 +33,12 @@ class data_loader(object):
 		# test set
 		self.test_x_start_index, self.test_x_end_index, self.test_y_index = self.generate_index(test_video)
 
+	def preprocess_data(self):
+		# convert to float
+		data = self.data / 255
+		## centering by mean train image
+		self.mean_image = np.mean(self.data[self.train_x_start_index, :, :, :], axis = 0)
+		self.data = self.data - self.mean_image
 
 	def generate_index(self, clip_indices):
 	    x_start_index = []
