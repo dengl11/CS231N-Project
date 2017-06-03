@@ -1,7 +1,7 @@
 # Data Folder #
 ######################
 data/
-!data/moving-box/processed/*/*
+!data/get_data.sh
 trained_model/
 
 output/
