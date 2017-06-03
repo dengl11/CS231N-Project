@@ -2,6 +2,7 @@
 ######################
 data/
 !data/moving-box/processed/*/*
+trained_model/
 
 output/
 tmp/
