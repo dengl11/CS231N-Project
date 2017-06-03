@@ -29,7 +29,7 @@ def conv_block(inputs, conv_filter, conv_kernel):
     pooled = tf.layers.max_pooling2d(conv3, (2,2), (2,2))
     return pooled
 
-def dconv_block(inputs, dconv_filter, dconv_kernel, dconv_strides, conv_input = None):
+def dconv_block(inputs, dconv_filter, dconv_kernel, dconv_strides, conv_input = None, activation = parametric_relu):
     if conv_input is not None:
         inputs = tf.concat([inputs, conv_input], 3)
     dconv = tf.layers.conv2d_transpose(inputs,
@@ -37,17 +37,17 @@ def dconv_block(inputs, dconv_filter, dconv_kernel, dconv_strides, conv_input = 
                                        dconv_kernel,
                                        dconv_strides,
                                        padding='same',
-                                       activation=parametric_relu)
+                                       activation=activation)
     conv1 = tf.layers.conv2d(dconv, 
                              dconv_filter, 
                              (3,3),
                              padding='same', 
-                             activation=parametric_relu)
+                             activation=activation)
     conv2 = tf.layers.conv2d(conv1, 
                              dconv_filter, 
                              (3,3),
                              padding='same', 
-                             activation=parametric_relu)
+                             activation=activation)
     return conv2
 
 def parametric_relu(x):
@@ -68,10 +68,10 @@ def plot_and_save(batch_x, batch_y, pred, title, save_path, size = (24, 16)):
 	f, axarr = plt.subplots(N,4, sharex=True)
 	#plt.tick_params(axis='both', which='both', bottom='off', top='off', labelbottom='off', right='off', left='off', labelleft='off')
 	for ind in range(N):
-		axarr[ind][0].imshow((batch_x[ind,:,:,:3]).astype('uint8'))
-		axarr[ind][1].imshow((batch_x[ind,:,:,3:]).astype('uint8'))
-		axarr[ind][2].imshow((batch_y[ind,:,:,:]).astype('uint8'))
-		axarr[ind][3].imshow((pred[ind,:,:,:]).astype('uint8'))
+		axarr[ind][0].imshow((batch_x[ind,:,:,:3] + 128).astype('uint8'))
+		axarr[ind][1].imshow((batch_x[ind,:,:,3:] + 128).astype('uint8'))
+		axarr[ind][2].imshow((batch_y[ind,:,:,:] + 128).astype('uint8'))
+		axarr[ind][3].imshow((pred[ind,:,:,:] + 128).astype('uint8'))
 		axarr[ind][0].axis('off')
 		axarr[ind][1].axis('off')
 		axarr[ind][2].axis('off')
@@ -115,7 +115,7 @@ class deep_CNN_model(object):
 	    dconv_block4 = dconv_block(dconv_block5, 96, (4,4), (2,2), conv_block4)
 	    dconv_block3 = dconv_block(dconv_block4, 96, (4,4), (2,2), conv_block3)
 	    dconv_block2 = dconv_block(dconv_block3, 48, (4,4), (2,2), conv_block2)
-	    dconv_block1 = dconv_block(dconv_block2, 3, (4,4), (2,2))
+	    dconv_block1 = dconv_block(dconv_block2, 3, (4,4), (2,2), activation = None)
 	    y_out = dconv_block1
 	    return y_out
 

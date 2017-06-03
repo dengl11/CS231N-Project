@@ -5,6 +5,9 @@ def disable_axis(ax):
 	ax.set_xticklabels([])
 	ax.set_yticklabels([])
 
+def display_gif(path, name, width=300):
+    return display.HTML('<h3>{}</h3> <img src="{}", width={}>'.format(name, path, width))
+
 
 def sample_img(imgs):
     return imgs[np.random.choice(range(len(imgs)))]

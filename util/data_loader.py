@@ -10,8 +10,8 @@ class data_loader(object):
 		self.data_src = data_src
 		self.metadata_src = metadata_src
 		self.gap = gap
-		## convert to float
-		self.data = np.load(data_src)
+		## convert to zero centered
+		self.data = np.load(data_src) - 128
 		with open(metadata_src) as metadata_file:
 			self.metadata = json.load(metadata_file)
 		self.video_names = sorted(list(self.metadata.keys()))
@@ -32,10 +32,6 @@ class data_loader(object):
 		self.train_x_start_index, self.train_x_end_index, self.train_y_index = self.generate_index(train_video)
 		# test set
 		self.test_x_start_index, self.test_x_end_index, self.test_y_index = self.generate_index(test_video)
-
-	def preprocess_batch(self, x):
-		return(x - self.mean_image)
-	
 
 	def generate_index(self, clip_indices):
 	    x_start_index = []
@@ -62,10 +58,10 @@ class data_loader(object):
 			start_indices = np.asarray([self.test_x_start_index[i] for i in indices])
 			end_indices = np.asarray([self.test_x_end_index[i] for i in indices])
 			mid_indices = np.asarray([self.test_y_index[i] for i in indices])
-		start_frames = self.preprocess_batch(self.data[start_indices, :, :, :])
-		end_frames = self.preprocess_batch(self.data[end_indices, :, :, :])
+		start_frames = self.data[start_indices, :, :, :]
+		end_frames = self.data[end_indices, :, :, :]
 		X_batch = np.concatenate([start_frames, end_frames], axis = 3)
-		y_batch = self.preprocess_batch(self.data[mid_indices, :, :, :])
+		y_batch = self.data[mid_indices, :, :, :]
 		return(X_batch, y_batch)
 
 	def get_minibatches(self, minibatch_size = 16, training=True):
@@ -94,8 +90,8 @@ class data_loader(object):
 		left_frame = np.asarray(start_idx[start:end])
 		right_frame = np.asarray(end_idx[start:end])
 		mid_frame = np.asarray(mid_idx[start:end])
-		X = np.concatenate([self.preprocess_batch(self.data[left_frame, :, :, :]), self.preprocess_batch(self.data[right_frame, :, :, :])], axis = 3)
-		y = self.preprocess_batch(self.data[mid_frame, :, :, :])
+		X = np.concatenate([self.data[left_frame, :, :, :], self.data[right_frame, :, :, :]], axis = 3)
+		y = self.data[mid_frame, :, :, :]
 		return(X, y)
 	
 

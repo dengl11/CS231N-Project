@@ -18,10 +18,10 @@ def initialize_model(session, model, train_dir):
 
 def main():
 	######################### Hyperparameter#########################
-	learning_rate = 1e-3
+	learning_rate = 3e-3
 	decay_rate = 0.9  # decay per epoch
-	model_name = 'deep_CNN'
-	num_epochs = 10
+	model_name = 'deep_CNN_modified'
+	num_epochs = 12
 	#################################################################
 	train_dir = 'saved_model/{}/'.format(model_name)
 	if not os.path.exists(train_dir):
