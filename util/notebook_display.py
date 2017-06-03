@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from IPython import display
 
 def disable_axis(ax):
 	ax.set_xticklabels([])
@@ -35,6 +36,8 @@ def sample_pred_frames(imgs, gap = 3, num = 6, inorder=True):
     after = before + gap +1
     mid = (before + after)//2
     return (imgs[before], imgs[after], imgs[mid])
+
+
 
 
 def plot_img(img, size = None, ax=None):

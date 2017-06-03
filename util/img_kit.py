@@ -140,6 +140,28 @@ def imgs_in_folder(folder, format="jpeg"):
 	assert len(imgs)>0, "No images in folder!"
 	return imgs
 
+def sample_sequence(imgs, num = 6):
+    """
+    return a sample sequence from frames
+    """
+    n = imgs.shape[0]
+    start = np.random.choice(range(n-num))
+    selected = [i for i in range(start, start + num)]
+    return imgs[selected]
+
+def depreprocess_to_uint8(imgs):
+	"""
+	depreprocess images to uint8
+	Input:
+		imgs: nd array of float32
+	Ouput:
+		imgs: nd array of uint8 in range [0, 255]
+	"""
+	range_val = imgs.max() - imgs.min()
+	if range_val > 1 and range_val<=2: deprocess = (imgs+1)*255/2
+	if range_val <= 1:				   deprocess = imgs*255
+	return  deprocess.astype('uint8')
+
 
 def merge(end_points, mid):
 	"""
