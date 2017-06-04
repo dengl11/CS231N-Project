@@ -53,8 +53,9 @@ td img {
     margin: auto;
 }
 
-.title {
+#title {
     width: 100%;
+    color: white;
 }
 
 .separator {
@@ -133,7 +134,7 @@ body {
     text-align: center;
 }
 
-h3 a {
+h3 a , h1 a{
     color: white;
 }
 
