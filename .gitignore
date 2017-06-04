@@ -3,6 +3,10 @@
 data/
 !data/get_data.sh
 trained_model/
+!trained_model/README.md
+!output/README.md
+!output/gif/README.md
+!output/learning_curve/README.md
 
 output/
 tmp/
