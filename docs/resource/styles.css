@@ -1,0 +1,188 @@
+#t {
+		font-size: 150px;
+}
+#author span{
+	font-size: 1.6em;
+	font-weight: bold;
+	margin: 1em;
+}
+#author{
+	margin: 2em;
+	margin-top: 3em;
+	text-align: center;
+}
+
+.left,
+.right {
+		width: 15%;
+		float: top;
+		height: 100%;
+		display: inline-block;
+}
+
+.left {
+		float: left;
+}
+
+.right {
+		float: right;
+}
+
+.header h1 {
+		color: white;
+		margin: auto;
+
+}
+
+.title {
+		width: 100%;
+}
+
+.separator {
+		color: #f8f6ea;
+		margin-left: 1em;
+}
+
+.board {
+		width: 70%;
+		display: inline-block;
+}
+
+.body_content {
+		padding-top: 3%;
+}
+
+.card {
+		width: 80%;
+		margin: auto;
+}
+
+.image {
+		width: 100px;
+		height: 100px;
+		margin: 5px;
+}
+
+.segment {
+		width: 100%;
+		background-color: white;
+}
+
+.title {
+		margin-bottom: 1em;
+		width: 100%;
+		text-align: center;
+}
+
+.sep {
+		height: 1em;
+}
+
+body {
+	background: #f4f4f4;
+	width: 100%;
+	padding: 0;
+	margin: 0;
+	padding-bottom: 100em;
+}
+
+.body_content{
+	width: 94%;
+	margin: auto;
+	padding: 1em 0em;
+}
+.subtitle{
+	width: 100%;
+	display: block;
+	text-align: center;
+	padding-top: 2em;
+	color: #f4f4f4;
+}
+
+.header h1{
+	display: block;
+	text-align: center;
+	padding-bottom: 0.4em;
+}
+
+
+.logo{
+	width: 5em;
+}
+
+.logopanel{
+	margin: auto;
+	text-align: center;
+}
+
+h3 a{
+	color: white;
+}
+
+.desc{
+	font-size: 16;
+	display: inline-block;
+	text-align: justify;
+	 clear:both;
+}
+.body{
+	padding-top: 2em;
+	margin-bottom: 2em;
+
+}
+.divider{
+	/*width: 40%;*/
+}
+
+.gif{
+	margin: auto;
+}
+
+
+.center_text{
+	text-align: center;
+}
+/*img{
+	width: 60%;
+	padding: 2em;
+}*/
+.gif img{
+	width: 70%;
+}
+
+.comment{
+	color: gray;
+}
+.italic{
+	font-style: italic;
+	display: inline;
+}
+
+#effiTable img{
+	width: 90%;
+}
+
+.bold_text{
+	font-weight: bold;
+}
+.code{
+	font-weight: bold;
+	padding:0.3em;
+	display: block;
+}
+
+.mid_img{
+	width: 49%;
+}
+
+.mid_margin_top{
+	margin-top: 5em;
+}
+/*.tail img{
+	width: 100em;
+	height: 100em;
+}*/
+/*.tail a{
+	width: 100em;
+	height: 100em;
+}*/
