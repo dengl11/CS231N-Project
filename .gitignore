@@ -24,6 +24,7 @@ __pycache__
 # Media Files#
 ######################
 *.gif
+!docs/*/*.gif
 *.pyc
 
 
