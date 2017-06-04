@@ -29,6 +29,8 @@ def sample_and_show(imgs, size = (12, 6)):
     plot_img(sample, size = size)
     return sample
 
+
+
 def sample_pred_frames(imgs, gap = 3, num = 6, inorder=True):
     n = imgs.shape[0]
     before = np.random.choice(range(n-gap-1), num, replace=False)

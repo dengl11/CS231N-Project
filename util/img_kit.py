@@ -3,7 +3,7 @@
 ############################################################
 import os, sys
 from os import walk
-from PIL import Image
+from PIL import Image, ImageOps
 from scipy import misc
 import numpy as np
 from scipy.misc import *
@@ -224,4 +224,40 @@ def avg_imges(x1, x2, dtype='uint8'):
 
 def scale_loss(loss, init_range): 
 	return loss * 255 / init_range
- 	
+
+def Image2nparray(img):
+    """
+    Input:
+        Image object
+    Output:
+        np array
+    """
+    return np.asarray(img)
+
+
+
+def nparray2Image(img):
+    """
+    Input:
+	    np array
+    Output:
+	    Image object
+    """
+    return Image.fromarray(np.uint8(img))
+
+
+def add_border_to_img(img, border, color):
+	"""
+	add border to an image
+	Input:
+		img:     nd array
+		border:  width of border to be added | unit: pixel
+		color:   string | red | blue | yellow |white | black
+	"""
+	img = nparray2Image(img)
+	img = ImageOps.crop(img, border)
+	return Image2nparray(ImageOps.expand(img, border=border,fill=color))
+ 
+
+def add_border_to_imgs(imgs, width, color):
+ 	return np.array([add_border_to_img(i, width, color) for i in imgs])
