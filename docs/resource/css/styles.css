@@ -20,16 +20,17 @@ td img {
     height: 100%;
 }
 
-.center_panel div{
+.center_panel div {
     display: inline-block;
     margin: 2em 0.7em;
     padding: auto;
-
 }
-.center_panel{
-    margin:auto;
+
+.center_panel {
+    margin: auto;
     text-align: center
 }
+
 #author span {
     font-size: 1.6em;
     font-weight: bold;
@@ -144,7 +145,8 @@ body {
     text-align: center;
 }
 
-h3 a , h1 a{
+h3 a,
+h1 a {
     color: white;
 }
 
@@ -174,8 +176,8 @@ h3 a , h1 a{
 
 
 /*img{
-	width: 60%;
-	padding: 2em;
+    width: 60%;
+    padding: 2em;
 }*/
 
 .gif img {
@@ -220,12 +222,27 @@ h3 a , h1 a{
 
 
 /*.tail img{
-	width: 100em;
-	height: 100em;
+    width: 100em;
+    height: 100em;
 }*/
 
 
 /*.tail a{
-	width: 100em;
-	height: 100em;
+    width: 100em;
+    height: 100em;
 }*/
+
+@media screen and (max-width: 600px) {
+    #author {
+        font-size: 0.7em;
+    }
+    h2 {
+        font-size: 1em;
+    }
+    #title h3 {
+        font-size: 1em;
+    }
+    #title h1 {
+        font-size: 1.2em;
+    }
+}
