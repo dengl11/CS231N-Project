@@ -245,4 +245,7 @@ h1 a {
     #title h1 {
         font-size: 1.2em;
     }
+    .hide_on_small{
+        display: none;
+    }
 }
